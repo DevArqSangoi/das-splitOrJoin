@@ -12,7 +12,7 @@ The script uses the following Python libraries:
 - `tkinter`
 - `moviepy`
 
-You can install them using pip:
+You only need to install moviepy, `os` and `tkinter` are part of the standard Python library:
 
 - `pip install moviepy`
 
