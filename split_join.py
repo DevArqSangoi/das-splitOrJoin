@@ -30,27 +30,49 @@ def split_video(n):
 def join_videos():
     video_files = []
     for i in range(2):  # to ensure at least two videos are selected
-        video_files.append(filedialog.askopenfilename(title="Select video {}".format(i + 1)))
+        video_files.append(
+            filedialog.askopenfilename(title="Select video {}".format(i + 1))
+        )
     while True:
         print("\nOrder of the videos:")
         for i, file in enumerate(video_files, start=1):
             print("{}. {}".format(i, file))
         add_more = input("\nDo you want to add another video? (y/n): ")
         if add_more.lower() == "y":
-            video_files.append(filedialog.askopenfilename(title="Select video {}".format(len(video_files) + 1)))
+            video_files.append(
+                filedialog.askopenfilename(
+                    title="Select video {}".format(len(video_files) + 1)
+                )
+            )
         else:
             break
-    output_file = filedialog.asksaveasfilename(defaultextension=".mp4", title="Select where to save the final video")
+    output_file = filedialog.asksaveasfilename(
+        defaultextension=".mp4", title="Select where to save the final video"
+    )
     clips = [VideoFileClip(video) for video in video_files]
     final_clip = concatenate_videoclips(clips)
     final_clip.write_videofile(output_file)
+
+
+def convert_to_mp4():
+    print("Requesting video file for conversion...")
+    video_file = filedialog.askopenfilename(title="Select the video to convert")
+    print("Selected video:", video_file)
+    print("Requesting output directory...")
+    output_dir = filedialog.askdirectory(
+        title="Select where to save the converted video"
+    )
+    output_file = os.path.join(output_dir, "converted.mp4")
+    clip = VideoFileClip(video_file)
+    clip.write_videofile(output_file)
 
 
 def main():
     try:
         print("1. Split videos")
         print("2. Join videos")
-        choice = int(input("Choose an option (1 or 2): "))
+        print("3. Convert video to MP4")
+        choice = int(input("Choose an option (1, 2 or 3): "))
         root = Tk()
         root.withdraw()  # hide the extra window
         if choice == 1:
@@ -58,10 +80,12 @@ def main():
             split_video(n)
         elif choice == 2:
             join_videos()
+        elif choice == 3:
+            convert_to_mp4()
         else:
             print("Invalid option!")
     except KeyboardInterrupt:
-        print("\nOperation interrupted by the user.")
+        print("\\nOperation interrupted by the user.")
 
 
 if __name__ == "__main__":
